@@ -50,3 +50,6 @@ cat <<-EOH > ~/.gitconfig
   unstage = reset HEAD --
   last = log -1 HEAD
 EOH
+
+# clone rosetta
+git clone https://github.com:uprush/rosetta.git
