@@ -13,10 +13,13 @@ Rosetta makes log management easy. Features including:
 Pre-requisites
 --------------
 * Ubuntu 13.04 raring
-* Capistrano
 
 Usage
----------------
-See Capistrano tasks as follows
+-----
+Bootstrap Rosetta operation center.
 
-	cap -T
+	curl https://raw.github.com/uprush/rosetta/master/bootstrap.sh | bash
+
+See Capistrano tasks as follows.
+
+	cd ~/rosetta && cap -T

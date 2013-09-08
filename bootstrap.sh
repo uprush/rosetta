@@ -57,4 +57,4 @@ cat <<-EOH > ~/.gitconfig
 EOH
 
 # clone rosetta
-git clone https://github.com:uprush/rosetta.git
+git clone https://github.com/uprush/rosetta.git ~/rosetta
