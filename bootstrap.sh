@@ -19,11 +19,12 @@ cd $HOME
 git clone https://github.com/sstephenson/rbenv.git .rbenv
 echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc
 echo 'eval "$(rbenv init -)"' >> ~/.bashrc
-exec $SHELL
+source ~/.bashrc
 
+mkdir ~/.rbenv/plugins
 git clone https://github.com/sstephenson/ruby-build.git ~/.rbenv/plugins/ruby-build
 echo 'export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"' >> ~/.bashrc
-exec $SHELL
+source ~/.bashrc
 
 rbenv install 2.0.0-p247
 rbenv global 2.0.0-p247
@@ -31,6 +32,10 @@ ruby -v
 
 # tell rubygems not to install the documentation for each package locally
 echo "gem: --no-ri --no-rdoc" > ~/.gemrc
+
+# install capistrano and chef
+gem install capistrano
+gem install chef
 
 # configure git
 cat <<-EOH > ~/.gitconfig
