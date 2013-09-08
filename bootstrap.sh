@@ -6,6 +6,7 @@
 # configure timezone and locale
 echo "Asia/Tokyo" | sudo tee /etc/timezone
 sudo dpkg-reconfigure --frontend noninteractive tzdata
+export LC_ALL=en_US.UTF-8
 sudo update-locale LC_ALL=en_US.UTF-8
 
 # install dependencies
@@ -17,14 +18,13 @@ sudo apt-get install -y \
 # install ruby
 cd $HOME
 git clone https://github.com/sstephenson/rbenv.git .rbenv
-echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc
-echo 'eval "$(rbenv init -)"' >> ~/.bashrc
-source ~/.bashrc
-
 mkdir ~/.rbenv/plugins
 git clone https://github.com/sstephenson/ruby-build.git ~/.rbenv/plugins/ruby-build
-echo 'export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"' >> ~/.bashrc
-source ~/.bashrc
+
+export PATH="$HOME/.rbenv/bin:$HOME/.rbenv/plugins/ruby-build/bin:$PATH"
+eval "$(rbenv init -)"
+echo 'export PATH="$HOME/.rbenv/bin:$HOME/.rbenv/plugins/ruby-build/bin:$PATH"' >> ~/.bashrc
+echo 'eval "$(rbenv init -)"' >> ~/.bashrc
 
 rbenv install 2.0.0-p247
 rbenv global 2.0.0-p247
