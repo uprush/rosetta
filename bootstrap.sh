@@ -3,9 +3,13 @@
 # Boot the operation center.
 #
 
-sudo apt-get update
+# configure timezone and locale
+echo "Asia/Tokyo" | sudo tee /etc/timezone
+sudo dpkg-reconfigure --frontend noninteractive tzdata
+sudo update-locale LC_ALL=en_US.UTF-8
 
 # install dependencies
+sudo apt-get update
 sudo apt-get install -y \
   git-core curl zlib1g-dev build-essential libssl-dev \
   libreadline-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt-dev
