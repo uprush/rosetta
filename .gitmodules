@@ -1,0 +1,9 @@
+[submodule "chef/cookbooks/ubuntu"]
+	path = chef/cookbooks/ubuntu
+	url = https://github.com/opscode-cookbooks/ubuntu.git
+[submodule "chef/cookbooks/build-essential"]
+	path = chef/cookbooks/build-essential
+	url = https://github.com/opscode-cookbooks/build-essential.git
+[submodule "chef/cookbooks/apt"]
+	path = chef/cookbooks/apt
+	url = https://github.com/opscode-cookbooks/apt.git
