@@ -2,3 +2,6 @@
 apache:
   user: apache
   group: apache
+
+redisio:
+  version: "2.6.13"

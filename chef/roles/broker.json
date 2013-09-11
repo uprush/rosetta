@@ -1,6 +1,8 @@
 {
   "run_list": [
     "recipe[ubuntu]",
-    "recipe[build-essential]"
+    "recipe[build-essential]",
+    "recipe[redisio::install]",
+    "recipe[redisio::enable]"
   ]
 }

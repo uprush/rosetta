@@ -13,8 +13,15 @@ namespace :rosetta do
       rosetta = ENV["ROSETTA_HOME"] || "#{ENV["HOME"]}/rosetta"
       my_rosetta = File.join(File.dirname(__FILE__), "../../")
       servers = find_servers :role => target
+      env = ENV["ROSETTA_ENV"] || "vagrant"
+      if env == "vagrant"
+        remote_rosetta = "/tmp/rosetta"
+      else
+        remote_rosetta = rosetta
+      end
+
       servers.each do |server|
-        `rsync -avz --delete #{my_rosetta}/ #{server}:#{rosetta}/`
+        `rsync -avz --delete #{my_rosetta}/ #{server}:#{remote_rosetta}/`
       end
 
       cmd = "sudo rsync -avz --delete #{rosetta}/chef/cookbooks/ /var/chef/cookbooks/"
