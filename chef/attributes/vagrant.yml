@@ -5,3 +5,7 @@ apache:
 
 redisio:
   version: "2.6.13"
+
+rosetta:
+  agent:
+    include_loggen: true
