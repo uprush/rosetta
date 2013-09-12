@@ -1,0 +1,8 @@
+---
+apache:
+  user: apache
+  group: apache
+
+rosetta:
+  agent:
+    include_loggen: true
