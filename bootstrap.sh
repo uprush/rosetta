@@ -58,3 +58,5 @@ EOH
 
 # clone rosetta
 git clone https://github.com/uprush/rosetta.git ~/rosetta
+cd ~/rosetta
+git submodule update --init

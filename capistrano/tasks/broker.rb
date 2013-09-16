@@ -4,7 +4,7 @@ namespace :rosetta do
   namespace :broker do
     desc "Set up Rosetta broker."
     task :setup, :roles => "broker" do
-      run_chef("broker")
+      remote_chef("broker")
     end
   end
 end

@@ -1,0 +1,14 @@
+<source>
+  type tail
+  format apache2
+  path <%= node['rosetta']['agent']['apache_access_log'] %>
+  tag redis.apache_access
+  pos_file /var/log/td-agent/apache_access.pos
+</source>
+
+<match redis.**>
+  type redis
+  host <%= node['rosetta']['broker']['redis_host'] %>
+  port <%= node['rosetta']['broker']['redis_port'] %>
+  db_number <%= node['rosetta']['broker']['redis_db'] %>
+</match>

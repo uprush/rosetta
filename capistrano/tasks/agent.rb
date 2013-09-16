@@ -1,8 +1,8 @@
 namespace :rosetta do
-  namespace :collector do
-    desc "Set up Rosetta collector."
-    task :setup, :roles => :collector do
-      # ...
+  namespace :agent do
+    desc "Set up Rosetta agent."
+    task :setup, :roles => :agent do
+      remote_chef("agent")
     end
   end
 end

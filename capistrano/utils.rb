@@ -2,7 +2,7 @@ require 'yaml'
 require 'json'
 require 'erb'
 
-def run_chef(role, options=[])
+def remote_chef(role, options=[])
   env = ENV["ROSETTA_ENV"] || "vagrant"
   zone = ENV["ROSETTA_ZONE"] || "a"
 
