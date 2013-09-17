@@ -15,7 +15,10 @@ bash "install_td-agent" do
 end
 
 # install td-agent
-package "td-agent"
+package "td-agent" do
+  action :install
+  options "--force-yes"
+end
 
 bash "configure_td-agent" do
   user "root"
@@ -38,4 +41,3 @@ template "/etc/td-agent/conf.d/apache_access.conf" do
   action :create
   notifies :restart, "service[td-agent]", :immediately
 end
-
