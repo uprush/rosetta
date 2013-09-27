@@ -10,3 +10,15 @@ rosetta:
   agent:
     include_loggen: true
     apache_access_log: /home/vagrant/logs/access.log
+
+java:
+  jdk_version: '7'
+
+elasticsearch:
+  nginx:
+    users:
+      -
+        username: aws
+        password: awsdemo
+    allow_status: true
+  bootstrap.mlockall: false

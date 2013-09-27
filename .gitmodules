@@ -13,3 +13,18 @@
 [submodule "chef/cookbooks/ulimit"]
 	path = chef/cookbooks/ulimit
 	url = https://github.com/bmhatfield/chef-ulimit.git
+[submodule "chef/cookbooks/elasticsearch"]
+	path = chef/cookbooks/elasticsearch
+	url = https://github.com/elasticsearch/cookbook-elasticsearch.git
+[submodule "chef/cookbooks/ark"]
+	path = chef/cookbooks/ark
+	url = https://github.com/opscode-cookbooks/ark.git
+[submodule "chef/cookbooks/java"]
+	path = chef/cookbooks/java
+	url = https://github.com/opscode-cookbooks/java.git
+[submodule "chef/cookbooks/windows"]
+	path = chef/cookbooks/windows
+	url = https://github.com/opscode-cookbooks/windows.git
+[submodule "chef/cookbooks/aws"]
+	path = chef/cookbooks/aws
+	url = https://github.com/opscode-cookbooks/aws.git
