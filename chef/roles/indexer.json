@@ -1,0 +1,9 @@
+{
+  "run_list": [
+    "recipe[ubuntu]",
+    "recipe[build-essential]",
+    "recipe[java]",
+    "recipe[elasticsearch]",
+    "recipe[elasticsearch::proxy]"
+  ]
+}
