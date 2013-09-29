@@ -28,9 +28,6 @@
 [submodule "chef/cookbooks/aws"]
 	path = chef/cookbooks/aws
 	url = https://github.com/opscode-cookbooks/aws.git
-[submodule "chef/cookbooks/kibana"]
-	path = chef/cookbooks/kibana
-	url = https://github.com/lusis/chef-kibana.git
 [submodule "chef/cookbooks/git"]
 	path = chef/cookbooks/git
 	url = https://github.com/opscode-cookbooks/git.git
@@ -40,3 +37,6 @@
 [submodule "chef/cookbooks/ohai"]
 	path = chef/cookbooks/ohai
 	url = https://github.com/opscode-cookbooks/ohai.git
+[submodule "chef/cookbooks/kibana"]
+	path = chef/cookbooks/kibana
+	url = https://github.com/uprush/chef-kibana.git
