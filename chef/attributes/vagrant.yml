@@ -15,6 +15,7 @@ java:
   jdk_version: '7'
 
 elasticsearch:
+  version: "0.90.5"
   nginx:
     users:
       -
@@ -22,3 +23,7 @@ elasticsearch:
         password: awsdemo
     allow_status: true
   bootstrap.mlockall: false
+
+kibana:
+  webserver_port: 8001
+  user: www-data
