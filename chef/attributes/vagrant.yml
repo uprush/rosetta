@@ -22,3 +22,7 @@ elasticsearch:
         password: awsdemo
     allow_status: true
   bootstrap.mlockall: false
+
+kibana:
+  webserver_port: 8001
+  user: www-data
