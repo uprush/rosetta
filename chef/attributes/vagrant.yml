@@ -27,3 +27,9 @@ elasticsearch:
 kibana:
   webserver_port: 8001
   user: www-data
+
+logstash:
+  elasticsearch_ip: localhost
+  elasticsearch_port: 9200
+  server:
+    install_rabbitmq: false

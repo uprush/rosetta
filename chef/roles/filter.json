@@ -2,6 +2,6 @@
   "run_list": [
     "recipe[ubuntu]",
     "recipe[build-essential]",
-    "recipe[logstash]"
+    "recipe[logstash::server]"
   ]
 }
