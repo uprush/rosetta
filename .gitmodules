@@ -40,3 +40,6 @@
 [submodule "chef/cookbooks/kibana"]
 	path = chef/cookbooks/kibana
 	url = https://github.com/uprush/chef-kibana.git
+[submodule "chef/cookbooks/logstash"]
+	path = chef/cookbooks/logstash
+	url = https://github.com/lusis/chef-logstash.git
