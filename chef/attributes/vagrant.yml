@@ -10,6 +10,8 @@ rosetta:
   agent:
     include_loggen: true
     apache_access_log: /home/vagrant/logs/access.log
+  filter:
+    flush_size: 1
 
 java:
   jdk_version: '7'
@@ -33,3 +35,5 @@ logstash:
   elasticsearch_port: 9200
   server:
     install_rabbitmq: false
+    xms: 128M
+    xmx: 256M

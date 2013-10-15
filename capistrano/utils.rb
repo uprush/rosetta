@@ -38,6 +38,7 @@ def remote_chef(role, options=[])
     `scp #{chef_exec} #{solo_config} #{solo_attr} #{server}:/tmp`
   end
 
-  run "bash #{chef_exec}", :roles => role
+  solo = `which chef-solo`
+  run "bash #{chef_exec} #{solo}", :roles => role
 
 end

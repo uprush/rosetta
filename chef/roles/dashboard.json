@@ -2,6 +2,7 @@
   "run_list": [
     "recipe[ubuntu]",
     "recipe[build-essential]",
+    "recipe[rosetta]",
     "recipe[kibana]",
     "recipe[kibana::nginx]"
   ]

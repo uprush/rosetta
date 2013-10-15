@@ -1,0 +1,23 @@
+input {
+  redis {
+    batch_count => 10
+    codec => "json"
+    data_type => "list"
+    db => <%= node['rosetta']['broker']['redis_db'] %>
+    host => "<%= node['rosetta']['broker']['redis_host'] %>"
+    key => "rl.apache_access"
+    port => <%= node['rosetta']['broker']['redis_port'] %>
+    tags => ["apache_access"]
+    type => "apache_access"
+  }
+}
+
+output {
+  stdout { debug => true}
+
+  elasticsearch_http {
+    host => "<%= node['logstash']['elasticsearch_ip'] %>"
+    port => <%= node['logstash']['elasticsearch_port'] %>
+    flush_size => <%= node['rosetta']['filter']['flush_size'] %>
+  }
+}
