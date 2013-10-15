@@ -42,4 +42,52 @@
 	url = https://github.com/uprush/chef-kibana.git
 [submodule "chef/cookbooks/logstash"]
 	path = chef/cookbooks/logstash
-	url = https://github.com/lusis/chef-logstash.git
+	url = https://github.com/uprush/chef-logstash.git
+[submodule "chef/cookbooks/ant"]
+	path = chef/cookbooks/ant
+	url = https://github.com/opscode-cookbooks/ant.git
+[submodule "chef/cookbooks/chef_handler"]
+	path = chef/cookbooks/chef_handler
+	url = https://github.com/opscode-cookbooks/chef_handler.git
+[submodule "chef/cookbooks/apache2"]
+	path = chef/cookbooks/apache2
+	url = https://github.com/opscode-cookbooks/apache2.git
+[submodule "chef/cookbooks/dmg"]
+	path = chef/cookbooks/dmg
+	url = https://github.com/opscode-cookbooks/dmg.git
+[submodule "chef/cookbooks/runit"]
+	path = chef/cookbooks/runit
+	url = https://github.com/opscode-cookbooks/runit.git
+[submodule "chef/cookbooks/yum"]
+	path = chef/cookbooks/yum
+	url = https://github.com/opscode-cookbooks/yum.git
+[submodule "chef/cookbooks/logrotate"]
+	path = chef/cookbooks/logrotate
+	url = https://github.com/opscode-cookbooks/logrotate.git
+[submodule "chef/cookbooks/php"]
+	path = chef/cookbooks/php
+	url = https://github.com/opscode-cookbooks/php.git
+[submodule "chef/cookbooks/mysql"]
+	path = chef/cookbooks/mysql
+	url = https://github.com/opscode-cookbooks/mysql.git
+[submodule "chef/cookbooks/openssl"]
+	path = chef/cookbooks/openssl
+	url = https://github.com/opscode-cookbooks/openssl.git
+[submodule "chef/cookbooks/xml"]
+	path = chef/cookbooks/xml
+	url = https://github.com/opscode-cookbooks/xml.git
+[submodule "chef/cookbooks/python"]
+	path = chef/cookbooks/python
+	url = https://github.com/opscode-cookbooks/python.git
+[submodule "chef/cookbooks/rabbitmq"]
+	path = chef/cookbooks/rabbitmq
+	url = https://github.com/opscode-cookbooks/rabbitmq.git
+[submodule "chef/cookbooks/erlang"]
+	path = chef/cookbooks/erlang
+	url = https://github.com/opscode-cookbooks/erlang.git
+[submodule "chef/cookbooks/rbenv"]
+	path = chef/cookbooks/rbenv
+	url = https://github.com/RiotGames/rbenv-cookbook.git
+[submodule "chef/cookbooks/yumrepo"]
+	path = chef/cookbooks/yumrepo
+	url = https://github.com/atomic-penguin/cookbook-yumrepo.git

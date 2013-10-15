@@ -1,3 +1,5 @@
+include_recipe "rosetta::default"
+
 # install apache log generator
 if node['rosetta']['agent']['include_loggen']
   package "ruby-dev" # install mkmf, which is required by apache-loggen
@@ -33,6 +35,11 @@ end
 service "td-agent"
 
 # install redis output plugin for fluentd
+gem_package "fluent-redislist" do
+  gem_binary "/usr/lib/fluent/ruby/bin/gem" # TODO: /usr/lib32 on 32 bit OS
+  options "--no-ri --no-rdoc"
+  action :install
+end
 
 # tail apache access log
 template "/etc/td-agent/conf.d/apache_access.conf" do
