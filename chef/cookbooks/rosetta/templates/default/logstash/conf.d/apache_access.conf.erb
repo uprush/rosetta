@@ -13,11 +13,22 @@ input {
 }
 
 output {
-  stdout { debug => true}
+  stdout { debug => false}
 
   elasticsearch_http {
     host => "<%= node['logstash']['elasticsearch_ip'] %>"
     port => <%= node['logstash']['elasticsearch_port'] %>
     flush_size => <%= node['rosetta']['filter']['flush_size'] %>
+  }
+
+  s3 {
+    access_key_id => "<%= node['rosetta']['filter']['s3']['access_key_id'] %>"
+    secret_access_key => "<%= node['rosetta']['filter']['s3']['secret_access_key'] %>"
+    bucket => "<%= node['rosetta']['filter']['s3']['bucket'] %>"
+    endpoint_region => "<%= node['rosetta']['filter']['s3']['endpoint_region'] %>"
+    format => "<%= node['rosetta']['filter']['s3']['format'] %>"
+    restore => true
+    size_file => <%= node['rosetta']['filter']['s3']['size_file'] %>
+    time_file => <%= node['rosetta']['filter']['s3']['time_file'] %>
   }
 }

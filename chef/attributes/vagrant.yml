@@ -12,6 +12,12 @@ rosetta:
     apache_access_log: /home/vagrant/logs/access.log
   filter:
     flush_size: 1
+    s3:
+      access_key_id: your_key
+      secret_access_key: your_secret_key
+      bucket: rosetta-logs
+      endpoint_region: us-west-2
+      size_file: 1048576 # 1MB
 
 java:
   jdk_version: '7'
