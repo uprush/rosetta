@@ -4,6 +4,6 @@ def configured_role
     "agent"      => ["localhost"],
     "indexer"    => ["localhost"],
     "dashboard"  => ["localhost"],
-    "filter"  => ["localhost"]
+    "filter"     => ["localhost"]
   }
 end
