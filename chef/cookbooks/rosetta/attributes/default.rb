@@ -1,5 +1,7 @@
 ## agent ##
 default['rosetta']['agent']['include_loggen'] = false
+default['rosetta']['agent']['apache_loggen']['bin'] = '/home/vagrant/.rbenv/shims/apache-loggen'
+default['rosetta']['agent']['apache_loggen']['options'] = '--rate 2 --rotate 86400'
 default['rosetta']['agent']['apache_access_log'] = '/var/log/apache2/access.log'
 
 

@@ -6,3 +6,39 @@ apache:
 rosetta:
   agent:
     include_loggen: true
+    apache_access_log: /var/log/apache2/access.log
+  broker:
+    redis_host: rosetta-broker.t1wsve.0001.usw2.cache.amazonaws.com
+  filter:
+    flush_size: 1
+    s3:
+      access_key_id: your_key
+      secret_access_key: your_secret_key
+      bucket: rosetta-logs
+      endpoint_region: us-west-2
+      size_file: 1048576 # 1MB
+
+java:
+  jdk_version: '7'
+
+elasticsearch:
+  version: "0.90.5"
+  nginx:
+    users:
+      -
+        username: aws
+        password: awsdemo
+    allow_status: true
+  bootstrap.mlockall: false
+
+kibana:
+  webserver_port: 8001
+  user: www-data
+
+logstash:
+  elasticsearch_ip: localhost
+  elasticsearch_port: 9200
+  server:
+    install_rabbitmq: false
+    xms: 128M
+    xmx: 256M
