@@ -1,0 +1,57 @@
+#!/bin/sh
+
+DAEMON="<%= node['rosetta']['agent']['loggen_bin'] %>"
+DAEMON_OPTS="<%= node['rosetta']['agent']['loggen_options'] %>"
+LOG_FILE="<%= node['rosetta']['agent']['apache_access_dir'] %>/<%= node['rosetta']['agent']['apache_access_file'] %>"
+NAME="apache-loggen"
+DESC="apache-loggen"
+
+test -x $DAEMON || exit 0
+
+set -e
+
+. /lib/lsb/init-functions
+
+PID=/var/run/apache-loggen.pid
+
+start() {
+		start-stop-daemon --start --quiet --background --make-pidfile --pidfile $PID \
+			--retry 5 --exec $DAEMON --oknodo -- $DAEMON_OPTS $LOG_FILE
+}
+
+stop() {
+		start-stop-daemon --stop --quiet --pidfile $PID --retry 5 --oknodo
+}
+
+case "$1" in
+	start)
+		log_daemon_msg "Starting $DESC" "$NAME"
+		start
+		log_end_msg $?
+		;;
+
+	stop)
+		log_daemon_msg "Stopping $DESC" "$NAME"
+		stop
+		log_end_msg $?
+		;;
+
+	restart)
+		log_daemon_msg "Restarting $DESC" "$NAME"
+		stop
+		sleep 1
+		start
+		log_end_msg $?
+		;;
+
+	status)
+		status_of_proc -p $PID "$DAEMON" apache-loggen
+		;;
+
+	*)
+		echo "Usage: $NAME {start|stop|restart|status}" >&2
+		exit 1
+		;;
+esac
+
+exit 0

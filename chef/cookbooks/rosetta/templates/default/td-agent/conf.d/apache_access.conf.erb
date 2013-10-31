@@ -1,7 +1,7 @@
 <source>
   type tail
   format apache2
-  path <%= node['rosetta']['agent']['apache_access_log'] %>
+  path <%= node['rosetta']['agent']['apache_access_dir'] %>/<%= node['rosetta']['agent']['apache_access_file'] %>
   tag rl.apache_access
   pos_file /var/log/td-agent/apache_access.pos
 </source>
