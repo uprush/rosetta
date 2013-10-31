@@ -4,6 +4,15 @@ include_recipe "rosetta::default"
 if node['rosetta']['agent']['include_loggen']
   package "ruby-dev" # install mkmf, which is required by apache-loggen
   gem_package "apache-loggen"
+
+  # create apache-loggen init script
+  template "/etc/init.d/apache-loggen" do
+    source "apache-loggen/init.erb"
+    mode 0755
+    action :create
+  end
+
+  service "apache-loggen"
 end
 
 # add treasure-data sources
