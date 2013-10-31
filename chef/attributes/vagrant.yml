@@ -9,7 +9,6 @@ redisio:
 rosetta:
   agent:
     include_loggen: true
-    apache_access_log: /home/vagrant/logs/access.log
   filter:
     flush_size: 1
     s3:
