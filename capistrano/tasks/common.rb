@@ -24,7 +24,7 @@ namespace :rosetta do
         `rsync -avz --delete #{my_rosetta}/ #{server}:#{remote_rosetta}/`
       end
 
-      cmd = "sudo rsync -avz --delete #{rosetta}/chef/cookbooks/ /var/chef/cookbooks/"
+      cmd = "sudo mkdir -p /var/chef/cookbooks ; sudo rsync -avz --delete #{rosetta}/chef/cookbooks/ /var/chef/cookbooks/"
       run cmd, :roles => target
     end
   end

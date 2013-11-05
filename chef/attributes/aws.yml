@@ -1,22 +1,22 @@
 ---
 apache:
-  user: apache
-  group: apache
+  user: www-data
+  group: www-data
 
 rosetta:
   agent:
     include_loggen: true
-    apache_access_log: /var/log/apache2/access.log
+    loggen_bin: /home/ubuntu/.rbenv/shims/apache-loggen
   broker:
     redis_host: rosetta-broker.t1wsve.0001.usw2.cache.amazonaws.com
   filter:
-    flush_size: 1
+    flush_size: 100
     s3:
       access_key_id: your_key
       secret_access_key: your_secret_key
       bucket: rosetta-logs
       endpoint_region: us-west-2
-      size_file: 1048576 # 1MB
+      size_file: 5242880 # 5MB
 
 java:
   jdk_version: '7'
@@ -32,7 +32,7 @@ elasticsearch:
   bootstrap.mlockall: false
 
 kibana:
-  webserver_port: 8001
+  webserver_port: 80
   user: www-data
 
 logstash:
@@ -40,5 +40,5 @@ logstash:
   elasticsearch_port: 9200
   server:
     install_rabbitmq: false
-    xms: 128M
-    xmx: 256M
+    xms: 256M 
+    xmx: 1024M
