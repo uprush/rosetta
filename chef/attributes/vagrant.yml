@@ -32,8 +32,11 @@ elasticsearch:
   bootstrap.mlockall: false
 
 kibana:
+  download_url: https://s3-us-west-2.amazonaws.com/yifeng-public/download
+  version: "20130929"
   webserver_port: 8001
   user: www-data
+  es_port: 8080
 
 logstash:
   elasticsearch_ip: localhost
