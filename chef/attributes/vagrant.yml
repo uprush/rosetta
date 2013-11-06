@@ -1,8 +1,4 @@
 ---
-apache:
-  user: apache
-  group: apache
-
 redisio:
   version: "2.6.13"
 
@@ -36,7 +32,11 @@ kibana:
   version: "20130929"
   webserver_port: 8001
   user: www-data
-  es_port: 8080
+  nginx:
+    users:
+      -
+        username: aws
+        password: awsdemo
 
 logstash:
   elasticsearch_ip: localhost

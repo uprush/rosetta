@@ -34,9 +34,13 @@ elasticsearch:
 kibana:
   download_url: https://s3-us-west-2.amazonaws.com/yifeng-public/download
   version: "20130929"
-  webserver_port: 80
   user: www-data
   es_server: 172.31.13.121
+  nginx:
+    users:
+      -
+        username: aws
+        password: awsdemo
 
 logstash:
   elasticsearch_ip: 172.31.13.121
