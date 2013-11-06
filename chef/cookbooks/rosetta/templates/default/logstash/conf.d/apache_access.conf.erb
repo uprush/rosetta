@@ -12,6 +12,13 @@ input {
   }
 }
 
+filter {
+  geoip {
+    source => "host"
+    fields => ["country_code2"]
+  }
+}
+
 output {
   stdout { debug => false}
 
