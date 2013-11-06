@@ -9,7 +9,7 @@
 # - Launch EC2 instances using created AMI.
 # - Configure Rosetta component hosts in `config/aws-x.rb`
 # - Set up Rosetta components using capistrano and chef on operation center.
-# 
+#
 
 # create a snapshot from Rosetta operation center
 aws ec2 create-snapshot --volume-id vol-63f5610a
@@ -33,3 +33,19 @@ aws ec2 run-instances \
 
 # Create ElastiCache with Redis
 aws elasticache create-cache-cluster
+
+# sample data record
+# {"host":"104.129.146.40","user":null,"method":"GET","path":"/item/finance/806","code":200,"size":119,"referer":"/search/?c=Cameras+Health","agent":"Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0)","@node":"ip-172-31-11-77","@timestamp":"2013-11-06T09:08:51.000Z","@version":"1","type":"apache_access","tags":["apache_access"]}
+
+# create hive table
+# hive>
+# CREATE  EXTERNAL  TABLE apache_logs
+# (
+#   log STRING
+# )
+# ROW FORMAT DELIMITED FIELDS TERMINATED BY '\t' STORED AS TEXTFILE
+# LOCATION  's3://rosetta-logs/apache';
+
+# sample query
+# hive> select count(1) from apache_logs;
+
