@@ -42,6 +42,8 @@ logstash:
   elasticsearch_ip: localhost
   elasticsearch_port: 9200
   server:
+    source_url: https://s3-us-west-2.amazonaws.com/yifeng-public/download/logstash-1.2.1-flatjar.jar
+    checksum: 6a932acdfb0808fb04f01375415d7349401658817521b11b63fc1556adb431e7
     install_rabbitmq: false
     xms: 128M
     xmx: 256M
