@@ -28,7 +28,7 @@ output {
     flush_size => <%= node['rosetta']['filter']['flush_size'] %>
   }
 
-  s3 {
+  mys3 {
     access_key_id => "<%= node['rosetta']['filter']['s3']['access_key_id'] %>"
     secret_access_key => "<%= node['rosetta']['filter']['s3']['secret_access_key'] %>"
     bucket => "<%= node['rosetta']['filter']['s3']['bucket'] %>"
