@@ -72,6 +72,33 @@ The first step is to bootstrap a Rosetta operation center.
 
 All operations are defined as Capistrano tasks. The tasks are expected to execute on the operation center.
 
+Execute following steps on the operation center to set up Rosetta components:
+
+1. Export Rosetta global environment variables, including ROSETTA_ENV and ROSETTA_ZONE.
+2. Change your configuration in _rosetta/chef/attributes/<ROSETTA_ENV>.yml_.
+3. Configure server IPs of eash the componens in _rosetta/config/<ROSETTA_ENV>-<ROSETTA_ZONE>.rb_.
+4. Distribute Chef cookbooks to target servers.
+5. Set up the component.
+
+A sample setup flow as follows:
+
+    # 1. Export environment variables
+    export ROSETTA_ENV=aws
+    export ROSETTA_ZONE=a
+
+    # 2. Change environment attributes
+    vi rosetta/chef/attributes/aws.yml
+
+    # 3. Change zone specific configurations like component server IPs
+    vi rosetta/config/aws-a.rb
+
+    # 4. Distribute Chef cookbooks to rosetta agents
+    cd rosetta
+    TARGET=agent cap rosetta:common:dist_cookbook
+
+    # 5. set up rosetta agents
+    cap rosetta:agent:setup
+
 See a list of Capistrano tasks:
 
 	cd ~/rosetta && cap -T
