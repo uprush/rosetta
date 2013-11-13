@@ -16,7 +16,7 @@ rosetta:
       secret_access_key: your_secret_key
       bucket: rosetta-logs/apache
       endpoint_region: us-west-2
-      size_file: 67108864 # 64MB
+      size_file: 8388608 # 8MB
 
 java:
   jdk_version: '7'

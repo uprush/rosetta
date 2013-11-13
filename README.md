@@ -3,12 +3,15 @@ Rosetta
 
 Log Management Makes Easy
 -------------------------
-Rosetta makes log management easy. Features including:
+Rosetta makes log management easier by automating the setup of several open source log management software.
+
+Features including:
 
 * Real-time log collection.
 * Log search.
 * Dashboard.
 * Sending logs to Amazon S3.
+* Automate all the setup.
 
 Demo site
 ---------
