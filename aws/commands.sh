@@ -31,17 +31,13 @@ aws ec2 run-instances \
   --key-name ubuntu@jump1 \
   --subnet-id subnet-d9de0eb2
 
-# Create ElastiCache with Redis
-aws elasticache create-cache-cluster
-
 # sample data record
 # {"host":"104.129.146.40","user":null,"method":"GET","path":"/item/finance/806","code":200,"size":119,"referer":"/search/?c=Cameras+Health","agent":"Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0)","@node":"ip-172-31-11-77","@timestamp":"2013-11-06T09:08:51.000Z","@version":"1","type":"apache_access","tags":["apache_access"],"geoip":{"country_code2":"US"}}
 
 
-#### Kibana
-# QUERY: games
-# (games OR books) AND size:[130 TO 200]
-# My Dashboard
+#### Kibana ####
+# simple query: games
+# advanced query: (games OR books) AND size:[130 TO 200]
 
 
 #### HIVE ####
@@ -85,19 +81,20 @@ psql -d mydb -h mydb.cqsxlytconbn.us-west-2.redshift.amazonaws.com -p 5439 -U aw
 create table apache_logs (timestamp char(24), code int, path varchar);
 
 # copy apache_logs from 's3://rosetta-logs/csv'
-# credentials 'aws_access_key_id=<access-key-id>;aws_secret_access_key=<secret-access-key>';
-
 copy apache_logs from 's3://rosetta-logs/csv/000'
 credentials 'aws_access_key_id=<YOUR_KEY>;aws_secret_access_key=<SECRET_KEY>'
 delimiter ',';
 
+# a simple RedShift query
 select * from apache_logs where code != 200;
 
 
 # s3distcp
-# ./elastic-mapreduce --jobflow j-3GY8JC4179IOJ --jar \
-# /home/hadoop/lib/emr-s3distcp-1.0.jar \
-# --arg --s3Endpoint --arg 's3-us-west-2.amazonaws.com' \
-# --arg --src --arg 's3://rosetta-logs/apache/' \
-# --arg --dest --arg 's3://rosetta-logs/archive/' \
-# --arg --srcPattern --arg '*.txt'
+# TODO: this command doesn't work
+./elastic-mapreduce --jobflow j-2BVZI56PXBMEO --jar \
+/home/hadoop/lib/emr-s3distcp-1.0.jar \
+--args \
+'--src,s3://rosetta-logs/apache/, \
+--dest,s3://rosetta-logs/archive/, \
+--srcPattern,*.txt, \
+--outputCodec,lzo'
