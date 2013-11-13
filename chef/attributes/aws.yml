@@ -26,10 +26,12 @@ elasticsearch:
   nginx:
     users:
       -
-        username: aws
-        password: awsdemo
+        username: rosetta
+        password: rosettademo
     allow_status: true
   bootstrap.mlockall: false
+  path:
+    data: /data/elasticsearch
 
 kibana:
   download_url: https://s3-us-west-2.amazonaws.com/yifeng-public/download
@@ -39,8 +41,8 @@ kibana:
   nginx:
     users:
       -
-        username: aws
-        password: awsdemo
+        username: rosetta
+        password: rosettademo
 
 logstash:
   elasticsearch_ip: 172.31.13.121
