@@ -18,8 +18,8 @@ Demo site
 
 To demo the basic auth feature, the demo site is protected by password. The user/password is `rosetta/rosettademo` (configured in _rosetta/chef/attributes/aws.yml_).
 
-* [Demo Dashboard](http://ec2-54-200-177-9.us-west-2.compute.amazonaws.com/index.html#/dashboard/elasticsearch/uprush::default)
-* [Default Dashboard](http://ec2-54-200-177-9.us-west-2.compute.amazonaws.com/index.html#/dashboard/file/logstash.json)
+* [Demo Dashboard](http://rosetta.uprush.net/index.html#/dashboard/elasticsearch/uprush::default)
+* [Default Dashboard](http://rosetta.uprush.net/index.html#/dashboard/file/logstash.json)
 
 Logs are also stored in S3
 --------------------------
