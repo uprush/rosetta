@@ -1,14 +1,6 @@
 #!/bin/bash
 #
-# How to set up Rosetta on AWS?
-# - Launch an EC2 instance with Ubuntu Raring
-# - Install Ruby and Chef on the instance (via rosetta/bootstrap.sh)
-# - Add necessary public keys (e.g. your keys on operation center) to /home/ubuntu/.ssh/authorized_keys
-# - Create a snapshot for the root volume of the instance.
-# - Create AMI from the snapshot.
-# - Launch EC2 instances using created AMI.
-# - Configure Rosetta component hosts in `config/aws-x.rb`
-# - Set up Rosetta components using capistrano and chef on operation center.
+# Sample commands to set up Rosetta and integrate with AWS big data solutions.
 #
 
 # create a snapshot from Rosetta operation center
@@ -42,7 +34,7 @@ aws ec2 run-instances \
 
 #### HIVE ####
 # login
-ssh hadoop@ec2-54-201-53-129.us-west-2.compute.amazonaws.com
+ssh hadoop@xxxx.compute.amazonaws.com
 
 # create hive table
 CREATE  EXTERNAL  TABLE apache_logs
@@ -76,11 +68,11 @@ where b.code > 0;
 head ~/services/bigdata/demo/sample.csv
 
 #### REDSHIFT ####
-psql -d mydb -h mydb.cqsxlytconbn.us-west-2.redshift.amazonaws.com -p 5439 -U awsuser -W
+psql -d mydb -h xxxx.redshift.amazonaws.com -p 5439 -U your_user -W
 
 create table apache_logs (timestamp char(24), code int, path varchar);
 
-# copy apache_logs from 's3://rosetta-logs/csv'
+# copy apache_logs from 's3://rosetta-logs/csv' into RedShift
 copy apache_logs from 's3://rosetta-logs/csv/000'
 credentials 'aws_access_key_id=<YOUR_KEY>;aws_secret_access_key=<SECRET_KEY>'
 delimiter ',';
@@ -89,12 +81,15 @@ delimiter ',';
 select * from apache_logs where code != 200;
 
 
-# s3distcp
-# TODO: this command doesn't work
-./elastic-mapreduce --jobflow j-2BVZI56PXBMEO --jar \
+#### s3distcp ####
+# Combine all the log files written in one day into a single file,
+# compressed using LZO codec,
+# target file sets to 1.5GB
+./elastic-mapreduce --jobflow j-T1ACLO7Y39R2 --jar \
 /home/hadoop/lib/emr-s3distcp-1.0.jar \
---args \
-'--src,s3://rosetta-logs/apache/, \
---dest,s3://rosetta-logs/archive/, \
---srcPattern,*.txt, \
---outputCodec,lzo'
+--arg --src --arg 's3://rosetta-logs/apache/' \
+--arg --dest --arg 's3://rosetta-logs/archive/' \
+--arg --outputCodec --arg 'lzo' \
+--arg --groupBy --arg '.*\.ip-.*\.([0-9]+-[0-9]+-[0-9]+)T.*\.txt' \
+--arg --targetSize --arg 12288
+
