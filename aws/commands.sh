@@ -149,7 +149,9 @@ TBLPROPERTIES ('hbase.table.name' = 'apache_logs');
 INSERT OVERWRITE TABLE hbase_apache_logs SELECT * FROM hive_apache_logs where key is not null;
 
 # alter table
+disable 'apache_logs'
 alter 'apache_logs', {NAME => 'a', DATA_BLOCK_ENCODING => 'NONE', BLOOMFILTER => 'ROW', REPLICATION_SCOPE => '0', VERSIONS => '3', COMPRESSION => 'NONE', MIN_VERSIONS => '0', TTL => '2147483647', KEEP_DELETED_CELLS => 'false', BLOCKSIZE => '65536', IN_MEMORY => 'false', ENCODE_ON_DISK => 'true', BLOCKCACHE => 'true'}
+enable 'apache_logs'
 
 # schedule backup
 ./elastic-mapreduce -j j-10Y9155ATLNDP --jar /home/hadoop/lib/hbase.jar emr.hbase.backup.Main, --set-scheduled-backup, true, --backup-dir, s3://rosetta-logs/hbase, --incremental-backup-time-interval, 24, --incremental-backup-time-unit, hours, --start-time, now, --consistent
