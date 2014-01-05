@@ -55,6 +55,14 @@ as timestamp, code, path
 where b.code != 200
 limit 100;
 
+# nested json_tuple
+select concat(b.timestamp, ',', b.code, ',', b.path, ',', c.country_code2)
+from apache_logs a
+LATERAL VIEW json_tuple(a.log, '@timestamp', 'code', 'path', 'geoip') b
+as timestamp, code, path, geoip
+LATERAL VIEW json_tuple(b.geoip, 'country_code2') c
+as country_code2
+limit 1;
 
 # convert to csv, save in S3 (to load into RedShift)
 INSERT OVERWRITE DIRECTORY 's3://rosetta-logs/csv'
@@ -93,3 +101,55 @@ select * from apache_logs where code != 200;
 --arg --groupBy --arg '.*\.ip-.*\.([0-9]+-[0-9]+-[0-9]+)T.*\.txt' \
 --arg --targetSize --arg 12288
 
+
+#### HBase ####
+
+# (FULL) convert to tsv, save in S3
+INSERT OVERWRITE DIRECTORY 's3://rosetta-logs/tsv'
+select concat(b.path, '|', b.timestamp, '\t', b.host, '\t',  b.method, '\t', b.code, '\t', b.size, '\t', b.referer, '\t', b.agent, '\t', b.node, '\t', c.country_code2)
+from apache_logs a
+LATERAL VIEW json_tuple(a.log, 'host', 'user', 'method', 'path', 'code', 'size', 'referer', 'agent', '@node', '@timestamp', 'geoip') b
+as host, user, method, path, code, size, referer, agent, node, timestamp, geoip
+LATERAL VIEW json_tuple(b.geoip, 'country_code2') c
+as country_code2;
+
+# create a hive table to load the tsv file
+CREATE EXTERNAL TABLE hive_apache_logs (
+  key STRING,
+  host STRING,
+  method STRING,
+  code SMALLINT,
+  size INT,
+  referer STRING,
+  agent STRING,
+  node STRING,
+  cc2 STRING
+)
+ROW FORMAT DELIMITED FIELDS TERMINATED BY '\t' STORED AS TEXTFILE
+LOCATION  's3://rosetta-logs/tsv';
+
+
+# create a hive-managed hbase table
+CREATE TABLE hbase_apache_logs (
+  key STRING,
+  host STRING,
+  method STRING,
+  code SMALLINT,
+  size INT,
+  referer STRING,
+  agent STRING,
+  node STRING,
+  cc2 STRING
+)
+STORED BY 'org.apache.hadoop.hive.hbase.HBaseStorageHandler'
+WITH SERDEPROPERTIES ('hbase.columns.mapping' = ':key,a:host,a:method,a:code,a:size,a:referer,a:agent,a:node,a:cc2')
+TBLPROPERTIES ('hbase.table.name' = 'apache_logs');
+
+# insert data into hbase table
+INSERT OVERWRITE TABLE hbase_apache_logs SELECT * FROM hive_apache_logs where key is not null;
+
+
+alter 'apache_logs', {NAME => 'a', DATA_BLOCK_ENCODING => 'NONE', BLOOMFILTER => 'ROW', REPLICATION_SCOP true
+ E => '0', VERSIONS => '3', COMPRESSION => 'NONE', MIN_VERSIONS => '0', TTL => '2147483647', KEEP_DE
+ LETED_CELLS => 'false', BLOCKSIZE => '65536', IN_MEMORY => 'false', ENCODE_ON_DISK => 'true', BLOCK
+ CACHE => 'true'
