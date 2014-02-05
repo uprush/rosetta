@@ -93,37 +93,36 @@ select * from apache_logs where code != 200;
 # Combine all the log files written in one day into a single file,
 # compressed using LZO codec,
 # target file sets to 1.5GB
-./elastic-mapreduce --jobflow j-T1ACLO7Y39R2 --jar \
+emr --jobflow j-3IZW4SKZ25ETG --jar \
 /home/hadoop/lib/emr-s3distcp-1.0.jar \
 --arg --src --arg 's3://rosetta-logs/apache/' \
 --arg --dest --arg 's3://rosetta-logs/archive/' \
 --arg --outputCodec --arg 'lzo' \
 --arg --groupBy --arg '.*\.ip-.*\.([0-9]+-[0-9]+-[0-9]+)T.*\.txt' \
---arg --targetSize --arg 12288
-
+--arg --targetSize --arg 12288 \
+--arg --deleteOnSuccess
 
 #### HBase ####
 
 # (FULL) convert to tsv, save in S3
 INSERT OVERWRITE DIRECTORY 's3://rosetta-logs/tsv'
-select concat(b.path, '|', b.timestamp, '\t', b.host, '\t',  b.method, '\t', b.code, '\t', b.size, '\t', b.referer, '\t', b.agent, '\t', b.node, '\t', c.country_code2)
+select concat(b.user, '_', unix_timestamp(b.timestamp, "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"), '\t', b.host, '\t',  b.method, '\t', b.path, '\t', b.code, '\t', b.size, '\t', b.referer, '\t', b.agent, '\t', b.node)
 from apache_logs a
-LATERAL VIEW json_tuple(a.log, 'host', 'user', 'method', 'path', 'code', 'size', 'referer', 'agent', '@node', '@timestamp', 'geoip') b
-as host, user, method, path, code, size, referer, agent, node, timestamp, geoip
-LATERAL VIEW json_tuple(b.geoip, 'country_code2') c
-as country_code2;
+LATERAL VIEW json_tuple(a.log, 'host', 'user', 'method', 'path', 'code', 'size', 'referer', 'agent', '@node', '@timestamp') b
+as host, user, method, path, code, size, referer, agent, node, timestamp
+;
 
 # create a hive table to load the tsv file
 CREATE EXTERNAL TABLE hive_apache_logs (
   key STRING,
   host STRING,
   method STRING,
+  path STRING,
   code SMALLINT,
   size INT,
   referer STRING,
   agent STRING,
-  node STRING,
-  cc2 STRING
+  node STRING
 )
 ROW FORMAT DELIMITED FIELDS TERMINATED BY '\t' STORED AS TEXTFILE
 LOCATION  's3://rosetta-logs/tsv';
@@ -134,15 +133,15 @@ CREATE TABLE hbase_apache_logs (
   key STRING,
   host STRING,
   method STRING,
+  path STRING,
   code SMALLINT,
   size INT,
   referer STRING,
   agent STRING,
-  node STRING,
-  cc2 STRING
+  node STRING
 )
 STORED BY 'org.apache.hadoop.hive.hbase.HBaseStorageHandler'
-WITH SERDEPROPERTIES ('hbase.columns.mapping' = ':key,a:host,a:method,a:code,a:size,a:referer,a:agent,a:node,a:cc2')
+WITH SERDEPROPERTIES ('hbase.columns.mapping' = ':key,a:host,a:method,a:path,a:code,a:size,a:referer,a:agent,a:node')
 TBLPROPERTIES ('hbase.table.name' = 'apache_logs');
 
 # insert data into hbase table
@@ -153,6 +152,32 @@ disable 'apache_logs'
 alter 'apache_logs', {NAME => 'a', DATA_BLOCK_ENCODING => 'NONE', BLOOMFILTER => 'ROW', REPLICATION_SCOPE => '0', VERSIONS => '3', COMPRESSION => 'NONE', MIN_VERSIONS => '0', TTL => '2147483647', KEEP_DELETED_CELLS => 'false', BLOCKSIZE => '65536', IN_MEMORY => 'false', ENCODE_ON_DISK => 'true', BLOCKCACHE => 'true'}
 enable 'apache_logs'
 
+# take a snapshot
+emr -j j-19TQC5B3SQN98 -v --hbase-backup --consistent --backup-dir s3://rosetta-logs/backups/hbase
+
+# restore from snapshot
+emr -j j-19TQC5B3SQN98 --hbase-restore --backup-dir s3://rosetta-logs/backups/hbase --backup-version 20140113T031542Z
+
 # schedule backup
-./elastic-mapreduce -j j-10Y9155ATLNDP --jar /home/hadoop/lib/hbase.jar emr.hbase.backup.Main, --set-scheduled-backup, true, --backup-dir, s3://rosetta-logs/hbase, --incremental-backup-time-interval, 24, --incremental-backup-time-unit, hours, --start-time, now, --consistent
+./elastic-mapreduce -j j-10Y9155ATLNDP --jar /home/hadoop/lib/hbase.jar emr.hbase.backup.Main, --set-scheduled-backup, true, --backup-dir, s3://rosetta-logs/backups/hbase, --incremental-backup-time-interval, 24, --incremental-backup-time-unit, hours, --start-time, now, --consistent
+
+
+# Ganglia
+http://master_endpoint/ganglia
+
+
+#### Spark & Shark ####
+## Shark
+set mapred.reduce.tasks=10;
+
+CREATE  EXTERNAL  TABLE path_status
+(
+  ts STRING,
+  code      STRING,
+  path      STRING
+)
+ROW FORMAT DELIMITED FIELDS TERMINATED BY ',' STORED AS TEXTFILE
+LOCATION  's3://rosetta-logs/csv';
+
+CREATE TABLE path_status_cached as SELECT * from path_status;
 
