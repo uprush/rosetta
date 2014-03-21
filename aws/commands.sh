@@ -33,7 +33,7 @@ aws ec2 register-image \
 aws ec2 run-instances \
   --image-id ami-723ea242 \
   --count 1 \
-  --instance-type t1.micro \
+  --instance-type m1.small \
   --key-name ubuntu@jump1 \
   --subnet-id subnet-d9de0eb2
 
@@ -99,7 +99,7 @@ head ~/services/bigdata/demo/sample.csv
 #### REDSHIFT ####
 psql -d mydb -h xxxx.redshift.amazonaws.com -p 5439 -U your_user -W
 
-create table apache_logs (timestamp char(24), code int, path varchar);
+create table apache_logs (timestamp char(24), code int, path varchar(255));
 
 # copy apache_logs from 's3://rosetta-logs/csv' into RedShift
 copy apache_logs from 's3://rosetta-logs/csv/000'
@@ -132,6 +132,7 @@ from apache_logs a
 LATERAL VIEW json_tuple(a.log, 'host', 'user', 'method', 'path', 'code', 'size', 'referer', 'agent', '@node', '@timestamp') b
 as host, user, method, path, code, size, referer, agent, node, timestamp
 ;
+
 
 # create a hive table to load the tsv file
 CREATE EXTERNAL TABLE hive_apache_logs (
@@ -202,3 +203,17 @@ LOCATION  's3://rosetta-logs/csv';
 
 CREATE TABLE path_status_cached as SELECT * from path_status;
 
+
+
+#### Redshift
+
+# (FULL) convert to tsv, save in S3
+INSERT OVERWRITE DIRECTORY 's3://rosetta-logs/redshift'
+select concat(b.user, '\t', unix_timestamp(b.timestamp, "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"), '\t', b.host, '\t',  b.method, '\t', b.path, '\t', b.code, '\t', b.size, '\t', b.referer, '\t', b.agent, '\t', b.node)
+from apache_logs a
+LATERAL VIEW json_tuple(a.log, 'host', 'user', 'method', 'path', 'code', 'size', 'referer', 'agent', '@node', '@timestamp') b
+as host, user, method, path, code, size, referer, agent, node, timestamp
+;
+
+# REDSHIFT
+create table apache_logs (uid int, ts int, host varchar(255), method varchar(255), path varchar(255), code int, size int, referer varchar(255), agent varchar(255), node varchar(255));
