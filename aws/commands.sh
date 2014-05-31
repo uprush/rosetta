@@ -45,7 +45,7 @@ aws ec2 run-instances \
   --key-name ec2-user@jump1
 
 # sample data record
-# {"host":"104.129.146.40","user":null,"method":"GET","path":"/item/finance/806","code":200,"size":119,"referer":"/search/?c=Cameras+Health","agent":"Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0)","@node":"ip-172-31-11-77","@timestamp":"2013-11-06T09:08:51.000Z","@version":"1","type":"apache_access","tags":["apache_access"],"geoip":{"country_code2":"US"}}
+# {"host":"104.129.146.40","user":10001,"method":"GET","path":"/item/finance/806","code":200,"size":119,"referer":"/search/?c=Cameras+Health","agent":"Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0)","@node":"ip-172-31-11-77","@timestamp":"2013-11-06T09:08:51.000Z","@version":"1","type":"apache_access","tags":["apache_access"],"geoip":{"country_code2":"US"}}
 
 
 #### Kibana ####
@@ -217,3 +217,32 @@ as host, user, method, path, code, size, referer, agent, node, timestamp
 
 # REDSHIFT
 create table apache_logs (uid int, ts int, host varchar(255), method varchar(255), path varchar(255), code int, size int, referer varchar(255), agent varchar(255), node varchar(255));
+
+# COPY from JSON
+create table apache_logs (host varchar(255), uid int, method varchar(10), path varchar(255), code int, size int, referer varchar(255), agent varchar(255), node varchar(255), ts varchar(24), version varchar(10), type varchar(32), tags varchar(255), geoip varchar(64));
+
+COPY apache_logs FROM 's3://rosetta-logs/sample/sample-log.json'
+credentials 'aws_access_key_id=AKIAIN6E3NPHQWNSVD3A;aws_secret_access_key=ukpus3BnbwWCQtUCe4l5ElGCmF0D1IYn7fNVcrrA'
+JSON AS 's3://rosetta-logs/meta/apache_logs_jsonpaths.json';
+
+
+# jsonpaths
+{
+  "jsonpaths":
+[
+"$['host']",
+"$['user']",
+"$['method']",
+"$['path']",
+"$['code']",
+"$['size']",
+"$['referer']",
+"$['agent']",
+"$['@node']",
+"$['@timestamp']",
+"$['@version']",
+"$['type']",
+"$['tags']",
+"$['geoip']"
+]
+}
