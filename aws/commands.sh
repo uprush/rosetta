@@ -216,7 +216,7 @@ as host, user, method, path, code, size, referer, agent, node, timestamp
 ;
 
 # REDSHIFT
-create table apache_logs (uid int, ts int, host varchar(255), method varchar(255), path varchar(255), code int, size int, referer varchar(255), agent varchar(255), node varchar(255));
+create table apache_logs (uid int, ts int, host varchar(255), method varchar(255), path varchar(255), code int, size int, referer varchar(255), agent varchar(255), node varchar(255)) distkey(uid) sortkey(ts);
 
 # COPY from JSON
 create table apache_logs (host varchar(255), uid int, method varchar(10), path varchar(255), code int, size int, referer varchar(255), agent varchar(255), node varchar(255), ts varchar(24), version varchar(10), type varchar(32), tags varchar(255), geoip varchar(64));
