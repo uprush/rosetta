@@ -13,14 +13,6 @@ Features including:
 * Sending logs to Amazon S3.
 * Automate all the setup.
 
-Demo site
----------
-
-To demo the basic auth feature, the demo site is protected by password. The user/password is `rosetta/rosettademo` (configured in _rosetta/chef/attributes/aws.yml_).
-
-* [Demo Dashboard](http://rosetta.uprush.net/index.html#/dashboard/elasticsearch/uprush::default)
-* [Default Dashboard](http://rosetta.uprush.net/index.html#/dashboard/file/logstash.json)
-
 Logs are also stored in S3
 --------------------------
 
