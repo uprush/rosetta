@@ -221,11 +221,6 @@ create table apache_logs (uid int, ts int, host varchar(255), method varchar(255
 # COPY from JSON
 create table apache_logs (host varchar(255), uid int, method varchar(10), path varchar(255), code int, size int, referer varchar(255), agent varchar(255), node varchar(255), ts varchar(24), version varchar(10), type varchar(32), tags varchar(255), geoip varchar(64));
 
-COPY apache_logs FROM 's3://rosetta-logs/sample/sample-log.json'
-credentials 'aws_access_key_id=AKIAIN6E3NPHQWNSVD3A;aws_secret_access_key=ukpus3BnbwWCQtUCe4l5ElGCmF0D1IYn7fNVcrrA'
-JSON AS 's3://rosetta-logs/meta/apache_logs_jsonpaths.json';
-
-
 # jsonpaths
 {
   "jsonpaths":
